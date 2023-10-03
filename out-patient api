@@ -1,0 +1,53 @@
+#%RAML 1.0
+title: Out-Patient Appointment API
+version: v1
+baseUri: https://api.example.com
+
+types:
+  Doctor:
+    properties:
+      id: integer
+      name: string
+      schedule: string
+
+  Appointment:
+    properties:
+      id: integer
+      doctorId: integer
+      appointmentTime: datetime
+      patientName: string
+
+/doctors:
+  get:
+    description: Get a list of doctors
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                { "id": 1, "name": "Dr. Smith", "schedule": "MTWThF" },
+                { "id": 2, "name": "Dr. Johnson", "schedule": "MTWThF" }
+              ]
+
+/doctors/{doctorId}:
+  get:
+    description: Get details of a specific doctor
+    responses:
+      200:
+        body:
+          application/json:
+            type: Doctor
+            example: { "id": 1, "name": "Dr. Smith", "schedule": "MTWThF" }
+
+/appointments:
+  post:
+    description: Book a new appointment
+    body:
+      application/json:
+        type: Appointment
+    responses:
+      201:
+        description: Appointment booked successfully
+      400:
+        description: Bad request
